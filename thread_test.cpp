@@ -4,52 +4,71 @@
 using namespace std;
 
 struct cMyObject : public OOSMOS::cObject {
-  cMyObject() : cObject() {
-    m_BlinkCount = 0;
+  cTSS BlinkingThread_Data;
+
+  void BlinkingThread(cTSS& rTSS) {
+    ThreadBegin();
+      for (;;) {
+        cout << "BlinkingThread: LED On" << endl;
+        ThreadDelayMS(250);
+        cout << "BlinkingThread: LED Off" << endl;
+        ThreadDelayMS(750);
+      }
+    ThreadEnd();
   }
 
-  int m_BlinkCount;
+  cTSS BeepingThread_Data;
 
-  static void SetLED(bool On) {
-    cout << (On ? "On" : "Off") << endl;
+  void BeepingThread(cTSS& rTSS) {
+    ThreadBegin();
+      for (;;) {
+        cout << "BeepingThread: Beep" << endl;
+        ThreadDelaySeconds(2);
+      }
+    ThreadEnd();
   }
 
-  struct cThreadA : public cTSS {
+  struct cTestThread : public cTSS {
     int   i;
     bool  TimedOut;
-  } ThreadA_Data;
+  } TestThread_Data;
 
-  void ThreadA(cThreadA& rTSS) {
+  void TestThread(cTestThread& rTSS) {
     ThreadBegin();
-      for (rTSS.i = 1; rTSS.i <= 3; rTSS.i++) {
-        SetLED(true);
-        ThreadDelayMS(250);
-        SetLED(false);
-        ThreadDelayMS(750);
-
-        m_BlinkCount += 1;
+      for (rTSS.i = 1; rTSS.i <= 5; rTSS.i++) {
+        cout << "TestThread: Iteration " << rTSS.i << endl;
+        ThreadDelayUS(300);
       }
 
-      ThreadDelayUS(1000);
+      cout << "TestThread: DelaySeconds" << endl;
       ThreadDelaySeconds(1);
+
+      cout << "TestThread: Yield" << endl;
       ThreadYield();
+
+      cout << "TestThread: WaitCond" << endl;
       ThreadWaitCond(true);
 
+      cout << "TestThread: WaitCond_Timeout1" << endl;
       ThreadWaitCond_TimeoutMS(true, 100, &rTSS.TimedOut);
       AssertWarn(!rTSS.TimedOut, "Should not have timed out.");
 
+      cout << "TestThread: WaitCond_Timeout2" << endl;
       ThreadWaitCond_TimeoutMS(false, 100, &rTSS.TimedOut);
       AssertWarn(rTSS.TimedOut, "Should have timed out.");
 
+      cout << "TestThread: Exit (to ThreadFinally)" << endl;
       ThreadExit();
-      cout << "should not get here" << endl;
+      cout << "TestThread: Should not get here" << endl;
     ThreadFinally();
-      cout << "exiting" << endl;
+      cout << "TestThread: Exiting" << endl;
     ThreadEnd();
   }
 
   void Run() {
-   ThreadA(ThreadA_Data);
+    TestThread(TestThread_Data);
+    BlinkingThread(BlinkingThread_Data);
+    BeepingThread(BeepingThread_Data);
   }
 };
 
