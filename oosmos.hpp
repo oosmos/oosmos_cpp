@@ -36,10 +36,6 @@ namespace OOSMOS {
     struct cTSS {
       cTSS();
 
-      #define OOSMOS_THREAD_CONTEXT_BEGIN   (-1)
-      #define OOSMOS_THREAD_CONTEXT_FINALLY (-2)
-      #define OOSMOS_THREAD_CONTEXT_END     (-3)
-
       struct sTimeout {
         uint32_t m_StartUS;
         uint32_t m_TimeoutUS;
@@ -63,6 +59,10 @@ namespace OOSMOS {
       bool OOSMOS_ThreadDelayMS(uint32_t MS);
       bool OOSMOS_ThreadWaitCond_TimeoutMS(bool Condition, uint32_t TimeoutMS, bool * pTimeoutStatus);
       bool OOSMOS_ThreadYield();
+
+      #define OOSMOS_THREAD_CONTEXT_BEGIN   (-1)
+      #define OOSMOS_THREAD_CONTEXT_FINALLY (-2)
+      #define OOSMOS_THREAD_CONTEXT_END     (-3)
 
       #define ThreadBegin() \
                                           switch (rTSS.m_ThreadContext) { \
