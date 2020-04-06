@@ -41,7 +41,7 @@ namespace OOSMOS {
         uint32_t m_TimeoutUS;
       };
 
-      uint32_t m_ThreadContext;
+      int      m_ThreadContext;
       bool     m_ThreadHasYielded;
       bool     m_ThreadFunctionIsActive;
       sTimeout m_ThreadTimeout;
