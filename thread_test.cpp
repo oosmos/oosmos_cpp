@@ -15,8 +15,8 @@ struct cMyObject : public OOSMOS::cObject {
   }
 
   struct cThreadA : public cTSS {
-    uint32_t i;
-    bool     TimedOut;
+    int   i;
+    bool  TimedOut;
   } ThreadA_Data;
 
   void ThreadA(cThreadA& rTSS) {
@@ -54,8 +54,7 @@ struct cMyObject : public OOSMOS::cObject {
 };
 
 void main(void) {
-  cMyObject MyObject1;
-  cMyObject MyObject2;
+  cMyObject MyObject;
 
   for (;;) {
     OOSMOS::Run();

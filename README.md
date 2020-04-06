@@ -1,8 +1,14 @@
 # OOSMOS for C++
 
+OOSMOS is the Object-Oriented State Machine Operating System, which features support for generative hierarchical state machines, publish/subscribe event processing, and first-come first-served scheduling.  OOSMOS leverages [ProtoThreads ](http://dunkels.com/adam/pt/) to implement two scoped types of threading: state threads and object threads. See [OOSMOS for C](https://www.oosmos.com).
+
+This C++ implementation is a specialized lite version of OOSMOS, supporting only object threads - concurrency for C++.
+
+Here is an example usage:
 
 ```cpp
 #include "oosmos.hpp"
+#include <cstdint>
 #include <iostream>
 
 using namespace std;
@@ -18,9 +24,9 @@ struct cMyObject : public OOSMOS::cObject {
     cout << (On ? "On" : "Off") << endl;
   }
 
-  struct cThreadA : public cTSS {
-    uint32_t i;
-    bool     TimedOut;
+  struct cThreadA : public cTSS { // TSS - Thread Specific Storage
+    int   i;
+    bool  TimedOut;
   } ThreadA_Data;
 
   void ThreadA(cThreadA& rTSS) {
@@ -68,3 +74,33 @@ void main(void) {
 }
 
 ```
+
+## Building the Example
+
+(Assumes that Python is installed.)
+
+Open a command line window whose environment variables are set up for any version of Visual Studio C++, VS 2013 through 2019.
+
+Then run:
+
+```text
+build.py
+```
+
+Which will result in the executable `thread_test.exe`.
+
+You'll see the following output:
+
+```text
+On
+Off
+On
+Off
+On
+Off
+exiting
+```
+
+The program does not terminate.  You must press CNTL-C to exit.
+
+Note that `bld.py` compiles the program with debug enabled (`/Zi`).  Use the `debug.py` script to launch the Microsoft debugger to best learn how it works.
