@@ -2,7 +2,7 @@
 
 OOSMOS is the Object-Oriented State Machine Operating System, which features support for generative hierarchical state machines, publish/subscribe event processing, and first-come first-served scheduling.  OOSMOS leverages [ProtoThreads ](http://dunkels.com/adam/pt/) to implement two scoped types of threading: state threads and object threads. See [OOSMOS for C](https://www.oosmos.com).
 
-This C++ implementation is a specialized lite version of OOSMOS, supporting only object threads - concurrency for C++.
+This C++ implementation is a specialized lite, MIT licensed, version of OOSMOS that supports only object threads - concurrency for C++.
 
 Here is an example usage:
 
