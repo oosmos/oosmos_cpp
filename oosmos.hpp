@@ -40,8 +40,6 @@ namespace OOSMOS {
       bool OOSMOS_ThreadDelayUS(uint32_t US);
       bool OOSMOS_ThreadDelayMS(uint32_t MS);
       bool OOSMOS_ThreadWaitCond_TimeoutMS(bool Condition, uint32_t TimeoutMS, bool * pTimeoutStatus);
-      bool OOSMOS_ThreadWaitEvent(int WaitEventCode);
-      bool OOSMOS_ThreadWaitEvent_TimeoutMS(int WaitEventCode, uint32_t TimeoutMS, bool * pTimedOut);
       bool OOSMOS_ThreadYield();
 
       #define ThreadBegin() \
@@ -89,20 +87,6 @@ namespace OOSMOS {
                                               if (!rTSS.OOSMOS_ThreadWaitCond_TimeoutMS(Cond, TimeoutMS, pTimeoutStatus)) \
                                                 return
 
-      #define ThreadWaitEvent(WaitEventCode) \
-                                            /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
-                                            /*lint -fallthrough*/ \
-                                            case __LINE__: rTSS.m_ThreadContext = __LINE__; \
-                                              if (!rTSS.OOSMOS_ThreadWaitEvent(WaitEventCode)) \
-                                                return
-
-      #define ThreadWaitEvent_TimeoutMS(WaitEventCode, TimeoutMS, pTimeoutResult) \
-                                            /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
-                                            /*lint -fallthrough*/ \
-                                            case __LINE__: rTSS.m_ThreadContext = __LINE__; \
-                                              if (!rTSS.OOSMOS_ThreadWaitEvent_TimeoutMS(WaitEventCode, TimeoutMS, pTimeoutResult)) \
-                                                return
-
       #define ThreadExit() \
                                               rTSS.m_ThreadContext = OOSMOS_THREAD_CONTEXT_FINALLY; \
                                               return
@@ -120,7 +104,6 @@ namespace OOSMOS {
     };
 
     void AssertWarn(bool, const char *);
-    void AssertError(bool, const char *);
 
     virtual void Run(void) = 0;
   };

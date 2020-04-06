@@ -126,16 +126,6 @@ namespace OOSMOS {
     return false;
   }
 
-  bool cObject::cTSS::OOSMOS_ThreadWaitEvent(int WaitEventCode)
-  {
-    return true;
-  }
-
-  bool cObject::cTSS::OOSMOS_ThreadWaitEvent_TimeoutMS(int WaitEventCode, uint32_t TimeoutMS, bool * pTimedOut)
-  {
-    return true;
-  }
-
   bool cObject::cTSS::OOSMOS_ThreadYield()
   {
     if (!m_ThreadHasYielded) {
