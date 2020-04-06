@@ -103,4 +103,4 @@ exiting
 
 The program does not terminate.  You must press CNTL-C to exit.
 
-Note that `bld.py` compiles the program with debug enabled (`/Zi`).  Use the `debug.py` script to launch the Microsoft debugger to best learn how it works.
+Note that `build.py` compiles the program with debug enabled (`/Zi`).  Use the `debug.py` script to launch the Microsoft debugger to best learn how it works.
