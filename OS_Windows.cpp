@@ -25,7 +25,7 @@
 
 namespace OS {
   void DelayMS(uint32_t MS) {
-    Sleep(1);
+    Sleep(MS);
   }
 
   uint32_t GetFreeRunningUS(void) {
