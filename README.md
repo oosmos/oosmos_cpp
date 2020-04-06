@@ -89,7 +89,7 @@ build.py
 
 Which will result in the executable `thread_test.exe`.
 
-You'll see the following output:
+Run `thread_test.exe` and you'll see the following output:
 
 ```text
 On
