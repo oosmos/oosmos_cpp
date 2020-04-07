@@ -1,6 +1,6 @@
 # OOSMOS for C++
 
-OOSMOS is the Object-Oriented State Machine Operating System, which features support for generative hierarchical state machines, publish/subscribe event processing, and first-come first-served scheduling.  OOSMOS leverages [ProtoThreads ](http://dunkels.com/adam/pt/) to implement two scoped types of threading: state threads and object threads. See [OOSMOS for C](https://www.oosmos.com).
+OOSMOS is the Object-Oriented State Machine Operating System, which features support for generative hierarchical state machines, publish/subscribe event processing, and first-come first-served scheduling.  OOSMOS leverages [ProtoThreads](http://dunkels.com/adam/pt/) to implement two scoped types of threading: state threads and object threads. See [OOSMOS for C](https://www.oosmos.com).
 
 This C++ implementation is a specialized lite, MIT licensed, version of OOSMOS that supports only object threads - concurrency for C++.
 
@@ -106,6 +106,8 @@ build.py
 
 Which will result in the executable `thread_test.exe`.
 
+## Running the Example
+
 Run `thread_test.exe` and you'll see the following output:
 
 ```text
@@ -142,4 +144,10 @@ BeepingThread: Beep
 
 The program does not terminate.  You must press CNTL-C to exit.
 
-Note that `build.py` compiles the program with debug enabled (`/Zi`).  Use the `debug.py` script to launch the Microsoft debugger to best learn how it works.
+## How ProtoThreads Work
+
+For a detailed walk-through of how ProtoThreads work, visit [INTERNALS.md](INTERNALS.md).
+
+## Debugging
+
+Note that `build.py` compiles the program with debug enabled (`/Zi`).  Use the `debug.py` script to launch the Microsoft debugger to step through an execution.
