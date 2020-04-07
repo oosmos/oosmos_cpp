@@ -39,7 +39,7 @@ __LINE__ Original source code                              Preprocessor output
 
 * On line 2: the preprocessor synchronizes line numbers, indicating that #line 3 is the next line.
 
-* On line 10, the `ThreadBegin()` macro is replaced with the `switch` and `case` statement. When the thread is started, `rTSS.m_ThreadContext` was initialized to `OOSMOS_THREAD_CONTEXT_BEGIN` which is `-1`, so, on entry to `BlinkingThread`, the switch first executes case `-1` and then drops into the `for` loop. (No `break` statement.)
+* On line 10, the `ThreadBegin()` macro is replaced with the `switch` and `case` statement. When the thread was started, `rTSS.m_ThreadContext` was initialized to `OOSMOS_THREAD_CONTEXT_BEGIN` which is `-1`, so, on entry to `BlinkingThread`, the `switch` first executes `case (-1)` and then drops into the `for` statement. (No `break` statement.)
 
 * Line 11, the `for` statement, is executed.
 
