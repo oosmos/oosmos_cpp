@@ -1,4 +1,4 @@
-# INTERNALS
+# How ProtoThreads Work
 
 ## Overview
 
