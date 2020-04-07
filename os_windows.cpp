@@ -2,6 +2,8 @@
 #include <cstdint>
 #include <iostream>
 
+using namespace std;
+
 namespace OS {
   void DelayUS(uint32_t US)
   {
