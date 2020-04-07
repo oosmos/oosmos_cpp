@@ -146,7 +146,7 @@ The program does not terminate.  You must press CNTL-C to exit.
 
 ## How ProtoThreads Work
 
-For a detailed walk-through of how ProtoThreads work, visit [INTERNALS.md](INTERNALS.md).
+For a detailed walk-through of how ProtoThreads work, visit [HOW-PROTOTHREADS-WORK.md](HOW-PROTOTHREADS-WORK.md).
 
 ## Debugging
 
