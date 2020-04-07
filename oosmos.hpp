@@ -24,13 +24,13 @@ namespace OOSMOS {
       bool     m_ThreadFunctionIsActive;
       sTimeout m_ThreadTimeout;
 
-      void TimeoutInSeconds(sTimeout * pTimeout, uint32_t TimeoutSeconds);
-      void TimeoutInMS(sTimeout * pTimeout, uint32_t TimeoutMS);
-      void TimeoutInUS(sTimeout * pTimeout, uint32_t TimeoutUS);
+      void TimeoutInSeconds(sTimeout * pTimeout, uint32_t TimeoutSeconds) const;
+      void TimeoutInMS(sTimeout * pTimeout, uint32_t TimeoutMS) const;
+      void TimeoutInUS(sTimeout * pTimeout, uint32_t TimeoutUS) const;
 
-      bool IsThreadTimeoutActive();
+      bool IsThreadTimeoutActive() const;
       void ResetThreadTimeout();
-      bool TimeoutHasExpired(const sTimeout * pTimeout);
+      bool TimeoutHasExpired(const sTimeout * pTimeout) const;
       bool ThreadTimeoutMS(uint32_t MS);
 
       bool OOSMOS_ThreadDelayUS(uint32_t US);
@@ -103,7 +103,7 @@ namespace OOSMOS {
                                           } return
     };
 
-    void AssertWarn(bool, const char *);
+    void AssertWarn(bool, const char *) const;
 
     virtual void Run(void) = 0;
   };
