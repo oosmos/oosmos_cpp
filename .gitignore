@@ -5,3 +5,5 @@
 **/*.suo
 **/*.sln
 **/*.VC.db
+
+thread_test

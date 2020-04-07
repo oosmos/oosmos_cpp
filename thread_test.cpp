@@ -72,7 +72,7 @@ struct cMyObject : public OOSMOS::cObject {
   }
 };
 
-void main(void) {
+int main(void) {
   cMyObject MyObject;
 
   for (;;) {

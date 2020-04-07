@@ -1,12 +1,25 @@
 #include <windows.h>
 #include <cstdint>
+#include <iostream>
 
 namespace OS {
-  void DelayMS(uint32_t MS) {
+  void DelayUS(uint32_t US)
+  {
+    cout << "DelayUS is not implemented on Windows" << endl;
+  }
+
+  void DelayMS(uint32_t MS)
+  {
     Sleep(MS);
   }
 
-  uint32_t GetFreeRunningUS(void) {
+  void DelaySeconds(uint32_t Seconds)
+  {
+    Sleep(Seconds * 1000);
+  }
+
+  uint32_t GetFreeRunningUS(void)
+  {
     SYSTEMTIME st;
     GetSystemTime(&st);
 
