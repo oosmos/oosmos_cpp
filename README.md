@@ -146,7 +146,7 @@ BlinkingThread: LED Off
 ...
 ```
 
-The program does not terminate.  You must press CNTL-C to exit.
+The program does not terminate.  You must press `CNTL-C` to exit.
 
 ## How ProtoThreads Work
 
@@ -155,3 +155,15 @@ For a detailed walk-through of how ProtoThreads work, visit [HOW-PROTOTHREADS-WO
 ## Debugging
 
 Note that `build.py` compiles the program with debug enabled (`/Zi`).  Use the `debug.py` script to launch the Microsoft debugger to step through an execution.
+
+## Rules
+
+1. You must call `OOSMOS::Run()` occasionally.
+   * On Windows and Linux, you'll want to throttle calls with a hard delay in order to be polite to others on the system. See `OS::DelayMS(1)` in the example.
+   * On 'bare metal' (Arduino, PIC32, STM32, etc.), you'll want to run without throttling.
+2. You must override virtual function `OOSMOS::cObject::Run` in each object that you create and then call each thread function, in turn.
+3. You must allocate thread specific storage (TSS) for each thread.
+   * If you have iterators or need other variables local to the function, you must specialize `OOSMOS::cObject::cTSS` and allocate them there (see `cTestThread` in the example).
+   * If you don't need local variables, then simply allocate one from `cTSS`. See `BeepingThread_Data` in the example.
+4. You must pass at least one argument to each thread function that is a reference to the thread's 'thread specific storage' that you created.  The name of the argument _must_ be `rTSS`.
+5. For new platforms, implement a new `os_<name>.cpp` file that conforms to the modest interface specified in `os.hpp`.
