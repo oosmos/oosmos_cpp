@@ -19,10 +19,13 @@ struct cMyObject : public OOSMOS::cObject {
 
   cTSS BeepingThread_Data;
 
+  uint32_t m_BeepCount = 0;
+
   void BeepingThread(cTSS& rTSS) {
     ThreadBegin();
       for (;;) {
-        cout << "BeepingThread: Beep" << endl;
+        m_BeepCount += 1;
+        cout << "BeepingThread: Beep " << m_BeepCount << endl;
         ThreadDelaySeconds(2);
       }
     ThreadEnd();

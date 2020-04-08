@@ -28,10 +28,13 @@ struct cMyObject : public OOSMOS::cObject {
 
   cTSS BeepingThread_Data;
 
+  uint32_t m_BeepCount = 0;
+
   void BeepingThread(cTSS& rTSS) {
     ThreadBegin();
       for (;;) {
-        cout << "BeepingThread: Beep" << endl;
+        m_BeepCount += 1;
+        cout << "BeepingThread: Beep " << m_BeepCount << endl;
         ThreadDelaySeconds(2);
       }
     ThreadEnd();
@@ -81,7 +84,7 @@ struct cMyObject : public OOSMOS::cObject {
   }
 };
 
-void main(void) {
+int main(void) {
   cMyObject MyObject;
 
   for (;;) {
@@ -89,7 +92,6 @@ void main(void) {
     OS::DelayMS(1);
   }
 }
-
 ```
 
 ## Building the Example
@@ -113,7 +115,7 @@ Run `thread_test.exe` and you'll see the following output:
 ```text
 TestThread: Iteration 1
 BlinkingThread: LED On
-BeepingThread: Beep
+BeepingThread: Beep 1
 TestThread: Iteration 2
 TestThread: Iteration 3
 TestThread: Iteration 4
@@ -128,17 +130,19 @@ TestThread: WaitCond_Timeout2
 TestThread: Exit (to ThreadFinally)
 TestThread: Exiting
 BlinkingThread: LED Off
-BeepingThread: Beep
+BeepingThread: Beep 2
 BlinkingThread: LED On
 BlinkingThread: LED Off
 BlinkingThread: LED On
 BlinkingThread: LED Off
-BeepingThread: Beep
+BeepingThread: Beep 3
 BlinkingThread: LED On
 BlinkingThread: LED Off
 BlinkingThread: LED On
 BlinkingThread: LED Off
-BeepingThread: Beep
+BeepingThread: Beep 4
+BlinkingThread: LED On
+BlinkingThread: LED Off
 ...
 ```
 
