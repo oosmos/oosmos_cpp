@@ -13,7 +13,6 @@ namespace OOSMOS {
   cObject::cTSS::cTSS()
   {
     m_ThreadContext          = OOSMOS_THREAD_CONTEXT_BEGIN;
-    m_ThreadHasYielded       = false;
     m_ThreadFunctionIsActive = false;
 
     ResetThreadTimeout();
@@ -63,7 +62,6 @@ namespace OOSMOS {
       if (TimeoutHasExpired(&m_ThreadTimeout)) {
         ResetThreadTimeout();
 
-        //(void) DeliverEvent(&EventTIMEOUT);
         return true;
       }
     }
@@ -128,12 +126,12 @@ namespace OOSMOS {
 
   bool cObject::cTSS::OOSMOS_ThreadYield()
   {
-    if (!m_ThreadHasYielded) {
-      m_ThreadHasYielded = true;
+    if (!m_ThreadFunctionIsActive) {
+      m_ThreadFunctionIsActive = true;
       return false;
     }
 
-    m_ThreadHasYielded = false;
+    m_ThreadFunctionIsActive = false;
     return true;
   }
 

@@ -20,7 +20,6 @@ namespace OOSMOS {
       };
 
       int      m_ThreadContext;
-      bool     m_ThreadHasYielded;
       bool     m_ThreadFunctionIsActive;
       sTimeout m_ThreadTimeout;
 
