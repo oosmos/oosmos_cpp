@@ -8,6 +8,7 @@ namespace OS {
   void DelayUS(uint32_t US)
   {
     cout << "DelayUS is not implemented on Windows" << endl;
+    US = US;
   }
 
   void DelayMS(uint32_t MS)
