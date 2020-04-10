@@ -2,7 +2,7 @@
 
 OOSMOS is the Object-Oriented State Machine Operating System, which features support for generative hierarchical state machines, publish/subscribe event processing, and first-come first-served scheduling.  OOSMOS leverages [ProtoThreads](http://dunkels.com/adam/pt/) to implement two scoped types of threading: state threads and object threads. See [OOSMOS for C](https://www.oosmos.com).
 
-This C++ implementation is a specialized lite, MIT licensed, version of OOSMOS that supports only object threads - concurrency for C++.
+This C++ implementation is a specialized lite version of OOSMOS that supports only object threads - concurrency for C++. MIT licensed.
 
 Here is an example usage:
 
@@ -13,9 +13,9 @@ Here is an example usage:
 using namespace std;
 
 struct cMyObject : public OOSMOS::cObject {
-  cTSS BlinkingThread_Data;
+  cStack BlinkingThread_Stack;
 
-  void BlinkingThread(cTSS& rTSS) {
+  void BlinkingThread(cStack& rStack) {
     ThreadBegin();
       for (;;) {
         cout << "BlinkingThread: LED On" << endl;
@@ -26,11 +26,11 @@ struct cMyObject : public OOSMOS::cObject {
     ThreadEnd();
   }
 
-  cTSS BeepingThread_Data;
+  cStack BeepingThread_Stack;
 
   uint32_t m_BeepCount = 0;
 
-  void BeepingThread(cTSS& rTSS) {
+  void BeepingThread(cStack& rStack) {
     ThreadBegin();
       for (;;) {
         m_BeepCount += 1;
@@ -40,15 +40,15 @@ struct cMyObject : public OOSMOS::cObject {
     ThreadEnd();
   }
 
-  struct cTestThread : public cTSS {
+  struct cTestThreadStack : public cStack {
     int   i;
     bool  TimedOut;
-  } TestThread_Data;
+  } TestThread_Stack;
 
-  void TestThread(cTestThread& rTSS) {
+  void TestThread(cTestThreadStack& rStack) {
     ThreadBegin();
-      for (rTSS.i = 1; rTSS.i <= 5; rTSS.i++) {
-        cout << "TestThread: Iteration " << rTSS.i << endl;
+      for (rStack.i = 1; rStack.i <= 5; rStack.i++) {
+        cout << "TestThread: Iteration " << rStack.i << endl;
         ThreadDelayUS(300);
       }
 
@@ -62,12 +62,12 @@ struct cMyObject : public OOSMOS::cObject {
       ThreadWaitCond(true);
 
       cout << "TestThread: WaitCond_Timeout1" << endl;
-      ThreadWaitCond_TimeoutMS(true, 100, &rTSS.TimedOut);
-      AssertWarn(!rTSS.TimedOut, "Should not have timed out.");
+      ThreadWaitCond_TimeoutMS(true, 100, &rStack.TimedOut);
+      AssertWarn(!rStack.TimedOut, "Should not have timed out.");
 
       cout << "TestThread: WaitCond_Timeout2" << endl;
-      ThreadWaitCond_TimeoutMS(false, 100, &rTSS.TimedOut);
-      AssertWarn(rTSS.TimedOut, "Should have timed out.");
+      ThreadWaitCond_TimeoutMS(false, 100, &rStack.TimedOut);
+      AssertWarn(rStack.TimedOut, "Should have timed out.");
 
       cout << "TestThread: Exit (to ThreadFinally)" << endl;
       ThreadExit();
@@ -78,9 +78,9 @@ struct cMyObject : public OOSMOS::cObject {
   }
 
   void Run() {
-    TestThread(TestThread_Data);
-    BlinkingThread(BlinkingThread_Data);
-    BeepingThread(BeepingThread_Data);
+    TestThread(TestThread_Stack);
+    BlinkingThread(BlinkingThread_Stack);
+    BeepingThread(BeepingThread_Stack);
   }
 };
 
@@ -93,6 +93,12 @@ int main() {
   }
 }
 ```
+
+## Stack Variables
+
+One of the notable and severe limitations of the original C implementation of ProtoThreads is that any values stored in variables on the runtime stack are not preserved from one invocation of the thread function to the next. This implementation addresses this limitation by introducting a stack per thread object where the programmer can store values from one invocation to the next in a clean, reliable, and readable way.  Call it a ProtoStack.
+
+See how the `TestThread` function uses the members of the `cTestThreadStack` class in the example.
 
 ## Building the Example
 
@@ -163,7 +169,7 @@ Note that `build.py` compiles the program with debug enabled (`/Zi`).  Use the `
    * On 'bare metal' (Arduino, PIC32, STM32, etc.), you'll want to run without throttling.
 2. You must override virtual function `OOSMOS::cObject::Run` in each object that you create and then call each thread function, in turn.
 3. You must allocate thread specific storage (TSS) for each thread.
-   * If you have iterators or need other variables local to the function, you must specialize `OOSMOS::cObject::cTSS` and allocate them there (see `cTestThread` in the example).
-   * If you don't need local variables, then simply allocate one from `cTSS`. See `BeepingThread_Data` in the example.
-4. You must pass at least one argument to each thread function that is a reference to the thread's 'thread specific storage' that you created.  The name of the argument _must_ be `rTSS`.
+   * If you have iterators or need other variables local to the function, you must specialize `OOSMOS::cObject::cStack` and allocate them there (see `cTestThread` in the example).
+   * If you don't need local variables, then simply allocate a stack of type `cStack`. See `BeepingThread_Stack` in the example.
+4. You must pass at least one argument to each thread function that is a reference to the thread's stack that you created.  The name of the argument _must_ be `rStack`.
 5. For new platforms, implement a new `os_<name>.cpp` file that conforms to the modest interface specified in `os.hpp`.

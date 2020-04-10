@@ -10,7 +10,7 @@ namespace OOSMOS {
     m_ObjectList.push_back(this);
   }
 
-  cObject::cTSS::cTSS()
+  cObject::cStack::cStack()
   {
     m_ThreadContext          = OOSMOS_THREAD_CONTEXT_BEGIN;
     m_ThreadFunctionIsActive = false;
@@ -18,17 +18,17 @@ namespace OOSMOS {
     ResetThreadTimeout();
   }
 
-  void cObject::cTSS::TimeoutInSeconds(cObject::cTSS::sTimeout * pTimeout, uint32_t TimeoutSeconds) const
+  void cObject::cStack::TimeoutInSeconds(cObject::cStack::sTimeout * pTimeout, uint32_t TimeoutSeconds) const
   {
     TimeoutInMS(pTimeout, TimeoutSeconds * 1000);
   }
 
-  void cObject::cTSS::TimeoutInMS(cObject::cTSS::sTimeout * pTimeout, uint32_t TimeoutMS) const
+  void cObject::cStack::TimeoutInMS(cObject::cStack::sTimeout * pTimeout, uint32_t TimeoutMS) const
   {
     TimeoutInUS(pTimeout, TimeoutMS * 1000);
   }
 
-  void cObject::cTSS::TimeoutInUS(cObject::cTSS::sTimeout * pTimeout, uint32_t TimeoutUS) const
+  void cObject::cStack::TimeoutInUS(cObject::cStack::sTimeout * pTimeout, uint32_t TimeoutUS) const
   {
     const uint32_t StartUS = OS::GetFreeRunningUS();
 
@@ -36,18 +36,18 @@ namespace OOSMOS {
     pTimeout->m_TimeoutUS = TimeoutUS;
   }
 
-  bool cObject::cTSS::IsThreadTimeoutActive() const
+  bool cObject::cStack::IsThreadTimeoutActive() const
   {
     return (m_ThreadTimeout.m_StartUS != 0) || (m_ThreadTimeout.m_TimeoutUS != 0);
   }
 
-  void cObject::cTSS::ResetThreadTimeout()
+  void cObject::cStack::ResetThreadTimeout()
   {
     m_ThreadTimeout.m_StartUS   = 0;
     m_ThreadTimeout.m_TimeoutUS = 0;
   }
 
-  bool cObject::cTSS::TimeoutHasExpired(const cObject::cTSS::sTimeout * pTimeout) const
+  bool cObject::cStack::TimeoutHasExpired(const cObject::cStack::sTimeout * pTimeout) const
   {
     const uint32_t StartUS   = pTimeout->m_StartUS;
     const uint32_t TimeoutUS = pTimeout->m_TimeoutUS;
@@ -56,7 +56,7 @@ namespace OOSMOS {
     return (NowUS - StartUS) >= TimeoutUS;
   }
 
-  bool cObject::cTSS::ThreadTimeoutMS(uint32_t MS)
+  bool cObject::cStack::ThreadTimeoutMS(uint32_t MS)
   {
     if (IsThreadTimeoutActive()) {
       if (TimeoutHasExpired(&m_ThreadTimeout)) {
@@ -72,7 +72,7 @@ namespace OOSMOS {
     return false;
   }
 
-  bool cObject::cTSS::OOSMOS_ThreadDelayUS(uint32_t US)
+  bool cObject::cStack::OOSMOS_ThreadDelayUS(uint32_t US)
   {
     if (IsThreadTimeoutActive()) {
       if (TimeoutHasExpired(&m_ThreadTimeout)) {
@@ -87,7 +87,7 @@ namespace OOSMOS {
     return false;
   }
 
-  bool cObject::cTSS::OOSMOS_ThreadDelayMS(uint32_t MS)
+  bool cObject::cStack::OOSMOS_ThreadDelayMS(uint32_t MS)
   {
     if (IsThreadTimeoutActive()) {
       if (TimeoutHasExpired(&m_ThreadTimeout)) {
@@ -102,7 +102,7 @@ namespace OOSMOS {
     return false;
   }
 
-  bool cObject::cTSS::OOSMOS_ThreadWaitCond_TimeoutMS(bool Condition, uint32_t TimeoutMS, bool * pTimeoutStatus)
+  bool cObject::cStack::OOSMOS_ThreadWaitCond_TimeoutMS(bool Condition, uint32_t TimeoutMS, bool * pTimeoutStatus)
   {
     if (!m_ThreadFunctionIsActive) {
       ResetThreadTimeout();
@@ -124,7 +124,7 @@ namespace OOSMOS {
     return false;
   }
 
-  bool cObject::cTSS::OOSMOS_ThreadYield()
+  bool cObject::cStack::OOSMOS_ThreadYield()
   {
     if (!m_ThreadFunctionIsActive) {
       m_ThreadFunctionIsActive = true;

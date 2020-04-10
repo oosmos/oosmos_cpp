@@ -4,9 +4,9 @@
 using namespace std;
 
 struct cMyObject : public OOSMOS::cObject {
-  cTSS BlinkingThread_Data;
+  cStack BlinkingThread_Stack;
 
-  void BlinkingThread(cTSS& rTSS) {
+  void BlinkingThread(cStack& rStack) {
     ThreadBegin();
       for (;;) {
         cout << "BlinkingThread: LED On" << endl;
@@ -17,11 +17,11 @@ struct cMyObject : public OOSMOS::cObject {
     ThreadEnd();
   }
 
-  cTSS BeepingThread_Data;
+  cStack BeepingThread_Stack;
 
   uint32_t m_BeepCount = 0;
 
-  void BeepingThread(cTSS& rTSS) {
+  void BeepingThread(cStack& rStack) {
     ThreadBegin();
       for (;;) {
         m_BeepCount += 1;
@@ -31,15 +31,15 @@ struct cMyObject : public OOSMOS::cObject {
     ThreadEnd();
   }
 
-  struct cTestThread : public cTSS {
+  struct cTestThreadStack : public cStack {
     int   i;
     bool  TimedOut;
-  } TestThread_Data;
+  } TestThread_Stack;
 
-  void TestThread(cTestThread& rTSS) {
+  void TestThread(cTestThreadStack& rStack) {
     ThreadBegin();
-      for (rTSS.i = 1; rTSS.i <= 5; rTSS.i++) {
-        cout << "TestThread: Iteration " << rTSS.i << endl;
+      for (rStack.i = 1; rStack.i <= 5; rStack.i++) {
+        cout << "TestThread: Iteration " << rStack.i << endl;
         ThreadDelayUS(300);
       }
 
@@ -53,12 +53,12 @@ struct cMyObject : public OOSMOS::cObject {
       ThreadWaitCond(true);
 
       cout << "TestThread: WaitCond_Timeout1" << endl;
-      ThreadWaitCond_TimeoutMS(true, 100, &rTSS.TimedOut);
-      AssertWarn(!rTSS.TimedOut, "Should not have timed out.");
+      ThreadWaitCond_TimeoutMS(true, 100, &rStack.TimedOut);
+      AssertWarn(!rStack.TimedOut, "Should not have timed out.");
 
       cout << "TestThread: WaitCond_Timeout2" << endl;
-      ThreadWaitCond_TimeoutMS(false, 100, &rTSS.TimedOut);
-      AssertWarn(rTSS.TimedOut, "Should have timed out.");
+      ThreadWaitCond_TimeoutMS(false, 100, &rStack.TimedOut);
+      AssertWarn(rStack.TimedOut, "Should have timed out.");
 
       cout << "TestThread: Exit (to ThreadFinally)" << endl;
       ThreadExit();
@@ -69,9 +69,9 @@ struct cMyObject : public OOSMOS::cObject {
   }
 
   void Run() {
-    TestThread(TestThread_Data);
-    BlinkingThread(BlinkingThread_Data);
-    BeepingThread(BeepingThread_Data);
+    TestThread(TestThread_Stack);
+    BlinkingThread(BlinkingThread_Stack);
+    BeepingThread(BeepingThread_Stack);
   }
 };
 
