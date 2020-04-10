@@ -235,7 +235,7 @@ The program does not terminate.  You must press `CNTL-C` to exit.
 
 ### Stack Variables
 
-One of the severe limitations of the original C implementation of ProtoThreads is that any values stored in variables on the runtime stack are not preserved from one invocation of the thread function to the next. This implementation addresses this limitation by introducting a lightweight stack per thread where the programmer can store values from one invocation to the next in a clean, reliable, and readable way.  Call it a ProtoStack.  In the example below, see how the `TestThread` function uses the members of the `cTestThreadStack` class.
+One of the severe limitations of the original C implementation of ProtoThreads is that any values stored in variables on the runtime stack are not preserved from one invocation of the thread function to the next. This implementation addresses this limitation by introducting a lightweight stack per thread where the programmer can store values from one invocation to the next in a clean, reliable, and readable way.  Call it a ProtoStack.  In the example above, see how the `TestThread` function uses the members of the `cTestThreadStack` class.
 
 ## How ProtoThreads Work
 
