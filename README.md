@@ -13,7 +13,7 @@ On Windows, open a command line window whose environment variables are set up fo
 Then run:
 
 ```text
-build.py
+python build.py
 ```
 
 This will build three example applications: `object_threads`, `static_threads`, and `test_threads`.
