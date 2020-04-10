@@ -4,39 +4,15 @@
 using namespace std;
 
 struct cMyObject : public OOSMOS::cObject {
-  cStack BlinkingThread_Stack;
+  uint32_t m_ObjectMember = 0;
 
-  void BlinkingThread(cStack& rStack) {
-    ThreadBegin();
-      for (;;) {
-        cout << "BlinkingThread: LED On" << endl;
-        ThreadDelayMS(250);
-        cout << "BlinkingThread: LED Off" << endl;
-        ThreadDelayMS(750);
-      }
-    ThreadEnd();
-  }
-
-  cStack BeepingThread_Stack;
-
-  uint32_t m_BeepCount = 0;
-
-  void BeepingThread(cStack& rStack) {
-    ThreadBegin();
-      for (;;) {
-        m_BeepCount += 1;
-        cout << "BeepingThread: Beep " << m_BeepCount << endl;
-        ThreadDelaySeconds(2);
-      }
-    ThreadEnd();
-  }
-
-  struct cTestThreadStack : public cStack {
+  struct cTestThreadStack : public OOSMOS::cStack {
     int   i;
     bool  TimedOut;
   } TestThread_Stack;
 
-  void TestThread(cTestThreadStack& rStack) {
+  void TestThread(cTestThreadStack& rStack)
+  {
     ThreadBegin();
       for (rStack.i = 1; rStack.i <= 5; rStack.i++) {
         cout << "TestThread: Iteration " << rStack.i << endl;
@@ -48,6 +24,8 @@ struct cMyObject : public OOSMOS::cObject {
 
       cout << "TestThread: Yield" << endl;
       ThreadYield();
+
+      m_ObjectMember += 1;
 
       cout << "TestThread: WaitCond" << endl;
       ThreadWaitCond(true);
@@ -68,14 +46,14 @@ struct cMyObject : public OOSMOS::cObject {
     ThreadEnd();
   }
 
-  void Run() {
+  void Run()
+  {
     TestThread(TestThread_Stack);
-    BlinkingThread(BlinkingThread_Stack);
-    BeepingThread(BeepingThread_Stack);
   }
 };
 
-int main() {
+int main()
+{
   cMyObject MyObject;
 
   for (;;) {
