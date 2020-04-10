@@ -30,11 +30,11 @@ struct cMyObject : public OOSMOS::cObject {
       cout << "TestThread: WaitCond" << endl;
       ThreadWaitCond(true);
 
-      cout << "TestThread: WaitCond_Timeout1" << endl;
+      cout << "TestThread: WaitCond_Timeout 1" << endl;
       ThreadWaitCond_TimeoutMS(true, 100, &rStack.TimedOut);
       AssertWarn(!rStack.TimedOut, "Should not have timed out.");
 
-      cout << "TestThread: WaitCond_Timeout2" << endl;
+      cout << "TestThread: WaitCond_Timeout 2" << endl;
       ThreadWaitCond_TimeoutMS(false, 100, &rStack.TimedOut);
       AssertWarn(rStack.TimedOut, "Should have timed out.");
 
