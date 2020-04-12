@@ -16,7 +16,51 @@ Then run:
 python build.py
 ```
 
-This will build three example applications: `object_threads`, `static_threads`, and `test_threads`.
+This will build three example applications: `static_threads`, `object_threads`, and `test_threads`.
+
+## Static Threads Example
+
+This is an example of a thread at file scope.
+
+```cpp
+#include "oosmos.hpp"
+#include <iostream>
+
+using namespace std;
+
+static void HeartbeatThread(OOSMOS::cStack& rStack)
+{
+  ThreadBegin();
+    for (;;) {
+      cout << "HeartbeatThread: Heartbeat On" << endl;
+      ThreadDelayMS(50);
+      cout << "HeartbeatThread: Heartbeat Off" << endl;
+      ThreadDelaySeconds(2);
+    }
+  ThreadEnd();
+}
+
+int main()
+{
+  OOSMOS::cStack HeartbeatThread_Stack;
+
+  for (;;) {
+    HeartbeatThread(HeartbeatThread_Stack);
+
+    OS::DelayMS(1);
+  }
+}
+```
+
+### Static Threads Output
+
+```text
+HeartbeatThread: Heartbeat On
+HeartbeatThread: Heartbeat Off
+HeartbeatThread: Heartbeat On
+HeartbeatThread: Heartbeat Off
+...
+```
 
 ## Object Threads Example
 
@@ -94,50 +138,6 @@ BlinkingThread: LED On
 BlinkingThread: LED Off
 BlinkingThread: LED On
 BlinkingThread: LED Off
-...
-```
-
-## Static Threads Example
-
-This is an example of a thread at file scope.
-
-```cpp
-#include "oosmos.hpp"
-#include <iostream>
-
-using namespace std;
-
-static void HeartbeatThread(OOSMOS::cStack& rStack)
-{
-  ThreadBegin();
-    for (;;) {
-      cout << "HeartbeatThread: Heartbeat On" << endl;
-      ThreadDelayMS(50);
-      cout << "HeartbeatThread: Heartbeat Off" << endl;
-      ThreadDelaySeconds(2);
-    }
-  ThreadEnd();
-}
-
-int main()
-{
-  OOSMOS::cStack HeartbeatThread_Stack;
-
-  for (;;) {
-    HeartbeatThread(HeartbeatThread_Stack);
-
-    OS::DelayMS(1);
-  }
-}
-```
-
-### Static Threads Output
-
-```text
-HeartbeatThread: Heartbeat On
-HeartbeatThread: Heartbeat Off
-HeartbeatThread: Heartbeat On
-HeartbeatThread: Heartbeat Off
 ...
 ```
 
@@ -252,3 +252,13 @@ For a detailed walk-through of how ProtoThreads work, visit [HOW-PROTOTHREADS-WO
    * If you don't need local variables, then simply allocate a stack of type `cStack`. See `BeepingThread_Stack` in the example.
 3. You must pass at least one argument to each thread function that is a reference to the thread's stack that you created.  The name of the argument _must_ be `rStack`.
 4. For new platforms, implement a new `os_<name>.cpp` file that conforms to the modest interface specified in `os.hpp`.
+
+## Naming Conventions
+
+A simple hungarian notation is used.
+
+* `m_` - Member variable.
+* `c` - Class.
+* `r` - Reference.
+
+This is MIT licensed.  Feel free to change to suit your preferred style.
