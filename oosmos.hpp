@@ -44,52 +44,60 @@ namespace OOSMOS {
     #define ThreadDelayUS(US) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
                                           /*lint -fallthrough*/ \
-                                          case __LINE__: rStack.m_ThreadContext = __LINE__; \
+                                          do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadDelayUS(US)) \
-                                              return
+                                              return; \
+                                          } while (0)
 
     #define ThreadDelayMS(MS) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
                                           /*lint -fallthrough*/ \
-                                          case __LINE__: rStack.m_ThreadContext = __LINE__; \
+                                          do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadDelayMS(MS)) \
-                                              return
+                                              return; \
+                                          } while(0)
 
     #define ThreadDelaySeconds(Seconds) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
                                           /*lint -fallthrough*/ \
-                                          case __LINE__: rStack.m_ThreadContext = __LINE__; \
+                                          do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadDelayMS(Seconds * 1000)) \
-                                              return
+                                              return; \
+                                          } while(0)
 
     #define ThreadYield() \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
                                           /*lint -fallthrough*/ \
-                                          case __LINE__: rStack.m_ThreadContext = __LINE__; \
+                                          do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadYield()) \
-                                              return
+                                              return; \
+                                          } while(0)
 
     #define ThreadWaitCond(Cond) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
                                           /*lint -fallthrough*/ \
-                                          case __LINE__: rStack.m_ThreadContext = __LINE__; \
+                                          do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!(Cond)) \
-                                              return
+                                              return; \
+                                          } while(0)
 
     #define ThreadWaitCond_TimeoutMS(Cond, TimeoutMS, pTimeoutStatus) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
                                           /*lint -fallthrough*/ \
-                                          case __LINE__: rStack.m_ThreadContext = __LINE__; \
+                                          do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadWaitCond_TimeoutMS(Cond, TimeoutMS, pTimeoutStatus)) \
-                                              return
+                                              return; \
+                                          } while(0)
 
     #define ThreadExit() \
-                                            rStack.m_ThreadContext = OOSMOS_THREAD_CONTEXT_FINALLY; \
-                                            return
+                                          do { rStack.m_ThreadContext = OOSMOS_THREAD_CONTEXT_FINALLY; \
+                                            return; \
+                                          } while(0)
 
     #define ThreadFinally() \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
-                                          case OOSMOS_THREAD_CONTEXT_FINALLY: rStack.m_ThreadContext = OOSMOS_THREAD_CONTEXT_END
+                                          do { case OOSMOS_THREAD_CONTEXT_FINALLY: rStack.m_ThreadContext = OOSMOS_THREAD_CONTEXT_END; \
+                                          } while (0)
 
     #define ThreadEnd() \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
