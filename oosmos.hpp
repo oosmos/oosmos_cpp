@@ -8,29 +8,31 @@
 using namespace std;
 
 namespace OOSMOS {
+  struct cTimeout {
+    cTimeout();
+
+    void TimeoutInSeconds(uint32_t TimeoutSeconds);
+    void TimeoutInMS(uint32_t TimeoutMS);
+    void TimeoutInUS(uint32_t TimeoutUS);
+    bool HasExpired() const;
+
+    //bool IsTimeoutActive() const;
+    //void Reset();
+
+    uint32_t m_StartUS;
+    uint32_t m_TimeoutUS;
+  };
+
   struct cStack {
     cStack();
 
-    struct sTimeout {
-      uint32_t m_StartUS;
-      uint32_t m_TimeoutUS;
-    };
-
     int32_t  m_ThreadContext;
     bool     m_ThreadFunctionIsActive;
-    sTimeout m_ThreadTimeout;
-
-    void TimeoutInSeconds(sTimeout * pTimeout, uint32_t TimeoutSeconds) const;
-    void TimeoutInMS(sTimeout * pTimeout, uint32_t TimeoutMS) const;
-    void TimeoutInUS(sTimeout * pTimeout, uint32_t TimeoutUS) const;
-
-    bool IsThreadTimeoutActive() const;
-    void ResetThreadTimeout();
-    bool TimeoutHasExpired(const sTimeout * pTimeout) const;
-    bool ThreadTimeoutMS(uint32_t MS);
+    cTimeout m_ThreadTimeout;
 
     bool OOSMOS_ThreadDelayUS(uint32_t US);
     bool OOSMOS_ThreadDelayMS(uint32_t MS);
+    bool OOSMOS_ThreadDelaySeconds(uint32_t Seconds);
     bool OOSMOS_ThreadWaitCond_TimeoutMS(bool Condition, uint32_t TimeoutMS, bool * pTimeoutStatus);
     bool OOSMOS_ThreadYield();
 
@@ -61,7 +63,7 @@ namespace OOSMOS {
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
                                           /*lint -fallthrough*/ \
                                           do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
-                                            if (!rStack.OOSMOS_ThreadDelayMS(Seconds * 1000)) \
+                                            if (!rStack.OOSMOS_ThreadDelaySeconds(Seconds)) \
                                               return; \
                                           } while(0)
 
