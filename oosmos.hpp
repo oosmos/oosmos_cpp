@@ -16,9 +16,6 @@ namespace OOSMOS {
     void TimeoutInUS(uint32_t TimeoutUS);
     bool HasExpired() const;
 
-    //bool IsTimeoutActive() const;
-    //void Reset();
-
     uint32_t m_StartUS;
     uint32_t m_TimeoutUS;
   };
