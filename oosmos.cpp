@@ -1,4 +1,5 @@
 #include "oosmos.hpp"
+#include "os.hpp"
 #include <list>
 #include <iostream>
 

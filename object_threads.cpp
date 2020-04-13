@@ -1,5 +1,7 @@
 #include "oosmos.hpp"
+#include "os.hpp"
 #include <iostream>
+#include <cstdint>
 
 using namespace std;
 

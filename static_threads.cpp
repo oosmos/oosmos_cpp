@@ -1,4 +1,5 @@
 #include "oosmos.hpp"
+#include "os.hpp"
 #include <iostream>
 
 using namespace std;
