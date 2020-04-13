@@ -37,6 +37,9 @@ namespace OOSMOS {
     #define OOSMOS_THREAD_CONTEXT_FINALLY (-2)
     #define OOSMOS_THREAD_CONTEXT_END     (-3)
 
+    // The underlying structure of OOSMOS C++ State Threads and Object Threads is based
+    // on protothreads by Adam Dunkels.
+
     #define ThreadBegin() \
                                         switch (rStack.m_ThreadContext) { \
                                           case OOSMOS_THREAD_CONTEXT_BEGIN:
@@ -54,7 +57,7 @@ namespace OOSMOS {
                                           do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadDelayMS(MS)) \
                                               return; \
-                                          } while(0)
+                                          } while (0)
 
     #define ThreadDelaySeconds(Seconds) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
@@ -62,7 +65,7 @@ namespace OOSMOS {
                                           do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadDelaySeconds(Seconds)) \
                                               return; \
-                                          } while(0)
+                                          } while (0)
 
     #define ThreadYield() \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
@@ -70,7 +73,7 @@ namespace OOSMOS {
                                           do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!rStack.OOSMOS_ThreadYield()) \
                                               return; \
-                                          } while(0)
+                                          } while (0)
 
     #define ThreadWaitCond(Cond) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
@@ -78,7 +81,7 @@ namespace OOSMOS {
                                           do { case __LINE__: rStack.m_ThreadContext = __LINE__; \
                                             if (!(Cond)) \
                                               return; \
-                                          } while(0)
+                                          } while (0)
 
     #define ThreadWaitCond_TimeoutMS(Cond, TimeoutMS, pTimeoutStatus) \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
@@ -91,7 +94,7 @@ namespace OOSMOS {
     #define ThreadExit() \
                                           do { rStack.m_ThreadContext = OOSMOS_THREAD_CONTEXT_FINALLY; \
                                             return; \
-                                          } while(0)
+                                          } while (0)
 
     #define ThreadFinally() \
                                           /*lint -e646 suppress "case/default within for loop; may have been misplaced" */ \
