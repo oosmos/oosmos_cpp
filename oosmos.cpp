@@ -41,20 +41,20 @@ namespace OOSMOS {
 
   OOSMOS::cStack::cStack()
   {
-    m_ThreadContext          = OOSMOS_THREAD_CONTEXT_BEGIN;
-    m_ThreadFunctionIsActive = false;
+    m_ThreadContext = OOSMOS_THREAD_CONTEXT_BEGIN;
+    m_FirstEntry    = true;
   }
 
   bool OOSMOS::cStack::OOSMOS_ThreadDelayUS(uint32_t US)
   {
-    if (!m_ThreadFunctionIsActive) {
+    if (m_FirstEntry) {
       m_ThreadTimeout.TimeoutInUS(US);
-      m_ThreadFunctionIsActive = true;
+      m_FirstEntry = false;
       return false;
     }
 
     if (m_ThreadTimeout.HasExpired()) {
-      m_ThreadFunctionIsActive = false;
+      m_FirstEntry = true;
       return true;
     }
 
@@ -68,26 +68,26 @@ namespace OOSMOS {
 
   bool OOSMOS::cStack::OOSMOS_ThreadDelaySeconds(uint32_t Seconds)
   {
-    return OOSMOS_ThreadDelayMS(Seconds * 1000);
+    return OOSMOS_ThreadDelayUS(Seconds * 1000 * 1000);
   }
 
   bool OOSMOS::cStack::OOSMOS_ThreadWaitCond_TimeoutMS(bool Condition, uint32_t TimeoutMS, bool * pTimeoutStatus)
   {
-    if (!m_ThreadFunctionIsActive) {
+    if (m_FirstEntry) {
       m_ThreadTimeout.TimeoutInMS(TimeoutMS);
-      m_ThreadFunctionIsActive = true;
+      m_FirstEntry = false;
       return false;
     }
 
     if (Condition) {
       *pTimeoutStatus = false;
-      m_ThreadFunctionIsActive = false;
+      m_FirstEntry = true;
       return true;
     }
 
     if (m_ThreadTimeout.HasExpired()) {
       *pTimeoutStatus = true;
-      m_ThreadFunctionIsActive = false;
+      m_FirstEntry = true;
       return true;
     }
 
@@ -96,12 +96,12 @@ namespace OOSMOS {
 
   bool OOSMOS::cStack::OOSMOS_ThreadYield()
   {
-    if (!m_ThreadFunctionIsActive) {
-      m_ThreadFunctionIsActive = true;
+    if (m_FirstEntry) {
+      m_FirstEntry = false;
       return false;
     }
 
-    m_ThreadFunctionIsActive = false;
+    m_FirstEntry = true;
     return true;
   }
 

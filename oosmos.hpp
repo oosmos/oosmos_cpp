@@ -24,7 +24,7 @@ namespace OOSMOS {
     cStack();
 
     int32_t  m_ThreadContext;
-    bool     m_ThreadFunctionIsActive;
+    bool     m_FirstEntry;
     cTimeout m_ThreadTimeout;
 
     bool OOSMOS_ThreadDelayUS(uint32_t US);
