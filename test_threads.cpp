@@ -3,10 +3,12 @@
 
 using namespace std;
 
-struct cMyObject : public OOSMOS::cObject {
+struct cMyObject : public OOSMOS::cObject
+{
   uint32_t m_ObjectMember = 0;
 
-  struct cTestThreadStack : public OOSMOS::cStack {
+  struct cTestThreadStack : public OOSMOS::cStack
+  {
     int   i;
     bool  TimedOut;
   } TestThread_Stack;

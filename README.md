@@ -72,7 +72,8 @@ Here is an example of two object threads, where the thread functions are inside 
 
 using namespace std;
 
-struct cMyObject : public OOSMOS::cObject {
+struct cMyObject : public OOSMOS::cObject
+{
   OOSMOS::cStack BlinkingThread_Stack;
 
   void BlinkingThread(OOSMOS::cStack& rStack)
@@ -151,10 +152,12 @@ This example tests all the OOSMOS thread functions.
 
 using namespace std;
 
-struct cMyObject : public OOSMOS::cObject {
+struct cMyObject : public OOSMOS::cObject
+{
   uint32_t m_ObjectMember = 0;
 
-  struct cTestThreadStack : public OOSMOS::cStack {
+  struct cTestThreadStack : public OOSMOS::cStack
+  {
     int   i;
     bool  TimedOut;
   } TestThread_Stack;

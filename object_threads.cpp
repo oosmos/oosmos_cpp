@@ -3,7 +3,8 @@
 
 using namespace std;
 
-struct cMyObject : public OOSMOS::cObject {
+struct cMyObject : public OOSMOS::cObject
+{
   OOSMOS::cStack BlinkingThread_Stack;
 
   void BlinkingThread(OOSMOS::cStack& rStack)
