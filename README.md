@@ -46,7 +46,6 @@ int main()
 
   for (;;) {
     HeartbeatThread(HeartbeatThread_Stack);
-
     OS::DelayMS(1);
   }
 }
